@@ -4,11 +4,20 @@ import mongoose from "mongoose";
 import {DB_NAME} from "./constants.js"
 import connectDB from "./db/db.js"
 import express from "express";
+import { app } from "./app.js";
 
 dotenv.config({
     path : "./env"
 })
-connectDB();
+connectDB()
+.then(() => {
+    app.listen(process.env.PORT, ()=> {
+        console.log("Server is started at port : ", process.env.PORT);
+    })
+})
+.catch((err) => {
+    console.log("Error in DataBase connection : ", err);
+})
 
 
 
