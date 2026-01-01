@@ -159,7 +159,7 @@ const logoutuser = asyncHandler(async(req, res) => {
 
     const cookieOptions = {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     sameSite: "strict"
   }
 
@@ -180,7 +180,7 @@ const refreshAccessToken = asyncHandler(async(req, res) => {
   }
 
 
-  const decodedTOken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+  const decodedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
 
   const user = await User.findById(decodedToken._id);
 
@@ -196,16 +196,16 @@ const refreshAccessToken = asyncHandler(async(req, res) => {
 
   const cookieOptions = {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     sameSite: "strict"
   }
 
-  const {accessToken, newRefreshToken } = await generateTokens(user._id);
+  const { accessToken, refreshToken: newRefreshToken } = await generateTokens(user._id);
 
   res.status(200)
   .cookie("refreshToken", newRefreshToken, cookieOptions)
   .cookie("accessToken", accessToken, cookieOptions)
-  .json(new ApiResponse(200, {accessToken, refreshToken : newRefreshToken}, "Access Token Refreshed"));
+  .json(new ApiResponse(200, { accessToken, refreshToken: newRefreshToken }, "Access Token Refreshed"));
 
 })
 
