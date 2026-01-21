@@ -1,4 +1,4 @@
-# StreamForge – Video Streaming Backend Service
+#StreamForge – Video Streaming Backend Service
 
 StreamForge is a backend service designed for secure video upload, storage, and streaming.  
 It provides REST APIs for user authentication, video management, and efficient media delivery, following clean backend architecture and industry best practices.
@@ -60,7 +60,6 @@ This project focuses purely on backend engineering concerns such as authenticati
 
 ## 📂 Project Structure
 
-```bash
 src/
  ├── controllers/   # Request handling logic
  ├── routes/        # API route definitions
@@ -72,7 +71,7 @@ src/
  └── app.js         # Express app initialization
 
 
----
+
 
 ## 🚀 API Endpoints (Sample)
 
@@ -87,7 +86,6 @@ src/
 
 ---
 
-```md
 ## ⚙️ Setup & Installation
 
 ### Prerequisites
@@ -99,7 +97,8 @@ src/
 This project uses a `.env` file to store sensitive configuration.  
 Create a `.env` file in the root directory (refer to `.env.example` for placeholders):
 
-```env
+```
+.env
 PORT=5000
 MONGODB_URL=your_mongodb_connection_string
 ACCESS_TOKEN_SECRET=your_jwt_secret
@@ -110,11 +109,16 @@ CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 CORS_ORIGIN=*
-
+```
+```
 git clone https://github.com/durgaprasad00773/video-streaming-backend.git
 cd video-streaming-backend
 npm install
+```
 
 npm run dev   # for development
 
-```
+📄 License
+
+This project is licensed under the MIT License.
+See the LICENSE
