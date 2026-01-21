@@ -1,1 +1,1 @@
-This is a backend project to a YouTube like platform , where videos can be uploaded
+A backend service for video upload, processing, storage, and streaming
