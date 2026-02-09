@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import jwt from "jsonwebtoken";
 //method to generate tokens
@@ -20,7 +20,6 @@ const generateTokens =async(userId) => {
   }
 
 }
-
 
 const registeruser = asyncHandler(async (req, res) => {
 
@@ -68,7 +67,10 @@ const registeruser = asyncHandler(async (req, res) => {
     username,
     email,
     password,
-    avatar: avatar.secure_url,
+    avatar: {
+      url: avatar.secure_url,
+      public_id: avatar.public_id,
+    },
     coverImage: cover?.secure_url || "",
   });
 
@@ -264,27 +266,33 @@ const updatedUserAvatar = asyncHandler(async(req, res) => {
   {
     throw new ApiError(400, "Avatar file is required");
   }
+
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  await deleteFromCloudinary(user.avatar?.public_id);
   
   const avatar = await uploadOnCloudinary(avatarLocalPath);
+
 
   if(!avatar.secure_url)
   {
     throw new ApiError(500, "Avatar upload failed");
   }
 
-  const updatedUser = await User.findByIdAndUpdate(
-    req.user._id,
-    {
-      $set : {
-        avatar : avatar.secure_url
-      }
-    },
-    { new : true }
-  ).select("-password -refreshToken");
+
+  user.avatar = {
+    url: avatar.secure_url,
+    public_id: avatar.public_id
+  };
+
+  await user.save({ validateBeforeSave: false });
+
 
   return res.status(200)
-  .json(new ApiResponse(200, {user : updatedUser}, "Avatar updated successfully"));
-
+  .json(new ApiResponse(200, {user : user}, "Avatar updated successfully"));
 })
 
 const updatedUserCoverImage = asyncHandler(async(req, res) => {

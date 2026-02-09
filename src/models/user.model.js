@@ -22,9 +22,15 @@ const userSchema = new mongoose.Schema({
         required : true,
         trim : true
     },
-    avatar : {
-        type : String,  //cloudinary url
-        required : true
+    avatar: {
+        url: {
+            type: String,
+            required: true,
+        },
+        public_id: {
+            type: String,
+            required: true,
+        }
     },
     coverImage : {
         type : String
