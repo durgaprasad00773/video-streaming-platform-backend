@@ -1,4 +1,6 @@
 #StreamForge – Video Streaming Backend Service
+[Model Link](https://app.eraser.io/workspace/YtPqZ1VogxGy1jzIDkzj)
+
 
 StreamForge is a backend service designed for secure video upload, storage, and streaming.  
 It provides REST APIs for user authentication, video management, and efficient media delivery, following clean backend architecture and industry best practices.
